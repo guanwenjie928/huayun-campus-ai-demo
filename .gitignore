@@ -1,0 +1,15 @@
+# 敏感信息 - 包含登录凭证和会话 Cookie
+auth_state.json
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node modules (如有)
+node_modules/
