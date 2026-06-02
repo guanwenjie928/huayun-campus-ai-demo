@@ -1,1341 +1,778 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>华云校园AI平台 — 操作演示</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .demo-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .demo-header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
-
-        .demo-header h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .demo-header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .stage {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            overflow: hidden;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .stage-title {
-            background: linear-gradient(90deg, #4A90D9 0%, #5B7CD5 100%);
-            color: white;
-            padding: 15px 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .stage-title .step-badge {
-            background: #F5A623;
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .browser-window {
-            background: #f5f7fa;
-            min-height: 500px;
-            position: relative;
-        }
-
-        .browser-bar {
-            background: #2d3748;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .browser-dots {
-            display: flex;
-            gap: 8px;
-        }
-
-        .browser-dots span {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .browser-dots span:nth-child(1) { background: #ff5f56; }
-        .browser-dots span:nth-child(2) { background: #ffbd2e; }
-        .browser-dots span:nth-child(3) { background: #27c93f; }
-
-        .browser-url {
-            background: #1a202c;
-            padding: 8px 16px;
-            border-radius: 6px;
-            color: #a0aec0;
-            font-size: 0.85rem;
-            flex: 1;
-        }
-
-        /* Login Page */
-        .login-page {
-            min-height: 420px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        }
-
-        .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .login-logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-logo h2 {
-            color: #2d3748;
-            font-size: 1.5rem;
-        }
-
-        .school-name {
-            color: #4A90D9;
-            font-weight: 700;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #4a5568;
-            font-size: 0.9rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #4A90D9;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(90deg, #4A90D9 0%, #5B7CD5 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
-        }
-
-        /* Dashboard */
-        .dashboard {
-            min-height: 480px;
-            display: flex;
-        }
-
-        .sidebar {
-            width: 250px;
-            background: #1a202c;
-            color: white;
-            padding: 20px 0;
-            flex-shrink: 0;
-            min-height: 500px;
-        }
-
-        .sidebar-section {
-            margin-bottom: 10px;
-        }
-
-        .sidebar-title {
-            padding: 12px 20px;
-            font-size: 0.8rem;
-            color: #718096;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .sidebar-item {
-            padding: 10px 20px 10px 36px;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-size: 0.9rem;
-            position: relative;
-        }
-
-        .sidebar-item:hover {
-            background: #2d3748;
-        }
-
-        .sidebar-item.active {
-            background: #4A90D9;
-        }
-
-        .sidebar-item .menu-dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #718096;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-
-        .sidebar-item.active .menu-dot {
-            background: white;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 25px;
-            background: #f8fafc;
-            min-width: 0;
-        }
-
-        .page-header {
-            margin-bottom: 20px;
-        }
-
-        .page-header h2 {
-            color: #2d3748;
-            font-size: 1.4rem;
-            margin-bottom: 6px;
-        }
-
-        .page-header p {
-            color: #718096;
-            font-size: 0.9rem;
-        }
-
-        .top-bar {
-            background: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 0.9rem;
-            color: #4a5568;
-        }
-
-        .top-bar select {
-            padding: 6px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            background: white;
-        }
-
-        .filter-bar {
-            background: white;
-            padding: 18px 20px;
-            border-radius: 10px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-select {
-            padding: 9px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            font-size: 0.85rem;
-            min-width: 160px;
-        }
-
-        .filter-input {
-            padding: 9px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            flex: 1;
-            min-width: 180px;
-            font-size: 0.85rem;
-        }
-
-        .btn-accent {
-            padding: 9px 20px;
-            background: linear-gradient(90deg, #F5A623 0%, #FFB84D 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .btn-search {
-            padding: 9px 20px;
-            background: #4A90D9;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .data-table {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .table-header {
-            display: grid;
-            grid-template-columns: 0.8fr 2fr 1fr 1fr 1.5fr 1.2fr;
-            background: #f7fafc;
-            padding: 14px 20px;
-            font-weight: 600;
-            color: #4a5568;
-            font-size: 0.85rem;
-            gap: 8px;
-        }
-
-        .table-row {
-            display: grid;
-            grid-template-columns: 0.8fr 2fr 1fr 1fr 1.5fr 1.2fr;
-            padding: 14px 20px;
-            border-top: 1px solid #edf2f7;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            transition: background 0.2s;
-        }
-
-        .table-row:hover {
-            background: #f7fafc;
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .status-active {
-            background: #EBF8FF;
-            color: #4A90D9;
-        }
-
-        .status-ended {
-            background: #E2E8F0;
-            color: #718096;
-        }
-
-        .action-btn {
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            cursor: pointer;
-            margin-right: 4px;
-            border: none;
-            white-space: nowrap;
-        }
-
-        .btn-detail {
-            color: #4A90D9;
-            background: transparent;
-            text-decoration: underline;
-        }
-        .btn-sync {
-            background: #E6FFFA;
-            color: #319795;
-        }
-        .btn-edit {
-            background: #EBF8FF;
-            color: #4A90D9;
-        }
-        .btn-delete {
-            background: #FED7D7;
-            color: #E53E3E;
-        }
-
-        .pagination {
-            padding: 14px 20px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: #718096;
-            background: white;
-            border-top: 1px solid #edf2f7;
-        }
-
-        .pagination select {
-            padding: 4px 8px;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-        }
-
-        /* Sub-page within stage */
-        .sub-page {
-            display: none;
-        }
-
-        .sub-page.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Annotations */
-        .annotation {
-            position: absolute;
-            background: #F5A623;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(245, 166, 35, 0.4);
-            z-index: 50;
-            pointer-events: none;
-            opacity: 0;
-            white-space: nowrap;
-        }
-
-        .annotation::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 8px solid #F5A623;
-        }
-
-        .annotation.left-arrow::after {
-            left: 15px;
-        }
-
-        .annotation.right-arrow::after {
-            left: auto;
-            right: 15px;
-        }
-
-        /* Workflow cards */
-        .workflow-cards {
-            display: flex;
-            gap: 20px;
-            padding: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .workflow-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            flex: 1;
-            min-width: 280px;
-            max-width: 380px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        }
-
-        .workflow-card h4 {
-            color: #2d3748;
-            margin-bottom: 15px;
-            font-size: 1.05rem;
-        }
-
-        .workflow-step {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            color: #4a5568;
-        }
-
-        .workflow-step .step-num {
-            background: #4A90D9;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        /* Summary stats bar */
-        .stats-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 16px 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            flex: 1;
-            min-width: 130px;
-            text-align: center;
-        }
-
-        .stat-card .stat-num {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #4A90D9;
-        }
-
-        .stat-card .stat-label {
-            font-size: 0.8rem;
-            color: #718096;
-            margin-top: 4px;
-        }
-
-        /* Controls */
-        .controls {
-            text-align: center;
-            padding: 25px;
-            background: white;
-            border-radius: 16px;
-            margin-top: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-        }
-
-        .control-btn {
-            padding: 14px 36px;
-            margin: 0 10px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-start {
-            background: linear-gradient(90deg, #4A90D9 0%, #5B7CD5 100%);
-            color: white;
-        }
-
-        .btn-start:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(74, 144, 217, 0.4);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #e2e8f0;
-            margin-top: 20px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4A90D9 0%, #F5A623 100%);
-            width: 0%;
-        }
-
-        .step-tag {
-            display: inline-block;
-            padding: 3px 10px;
-            background: #EDF2F7;
-            color: #4A5568;
-            border-radius: 12px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            margin-right: 6px;
-        }
-
-        /* Highlight box */
-        .highlight-box {
-            position: absolute;
-            border: 3px dashed #F5A623;
-            border-radius: 8px;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 40;
-        }
-
-        /* Transition success overlay */
-        .success-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #48BB78;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            z-index: 60;
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>华云校园AI平台 - 完整操作演示</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#1a1a2e;min-height:100vh;overflow-x:hidden}
+.demo-container{max-width:1500px;margin:0 auto;padding:30px 20px}
+.demo-header{text-align:center;color:#fff;margin-bottom:25px}
+.demo-header h1{font-size:2.2rem;font-weight:700}
+.demo-header p{font-size:1rem;opacity:.75;margin-top:6px}
+
+/* Browser chrome */
+.browser-frame{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.5);margin-bottom:25px}
+.browser-topbar{background:#2d3748;padding:14px 22px;display:flex;align-items:center;gap:14px}
+.browser-dots{display:flex;gap:7px}
+.browser-dots span{width:11px;height:11px;border-radius:50%}
+.browser-dots span:nth-child(1){background:#ff5f56}
+.browser-dots span:nth-child(2){background:#ffbd2e}
+.browser-dots span:nth-child(3){background:#27c93f}
+.browser-urlbar{background:#1a202c;padding:7px 16px;border-radius:20px;color:#a0aec0;font-size:.82rem;flex:1;display:flex;align-items:center;gap:8px}
+.browser-urlbar .lock{color:#48bb78}
+.browser-body{min-height:520px;background:#f5f7fa;position:relative}
+
+/* Login page */
+.login-screen{min-height:420px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f8fafc,#e2e8f0)}
+.login-card{background:#fff;padding:36px 40px;border-radius:14px;box-shadow:0 4px 24px rgba(0,0,0,.1);width:400px}
+.login-card h2{text-align:center;color:#2d3748;font-size:1.3rem;margin-bottom:4px}
+.login-card .school{color:#4A90D9;font-size:1.4rem;font-weight:700;margin-bottom:28px}
+.login-field{margin-bottom:18px}
+.login-field label{display:block;font-size:.82rem;color:#4a5568;margin-bottom:6px}
+.login-field input{width:100%;padding:11px 15px;border:2px solid #e2e8f0;border-radius:8px;font-size:.92rem;outline:none;transition:border-color .2s}
+.login-field input:focus{border-color:#4A90D9}
+.login-agree{display:flex;align-items:center;gap:8px;font-size:.78rem;color:#718096;margin-bottom:18px}
+.login-agree input{accent-color:#4A90D9}
+.login-btn{width:100%;padding:13px;background:linear-gradient(90deg,#4A90D9,#5B7CD5);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(74,144,217,.4)}
+
+/* Top bar inside app */
+.app-topbar{background:#fff;padding:8px 22px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;font-size:.84rem;color:#4a5568}
+.app-topbar select{padding:5px 10px;border:1px solid #e2e8f0;border-radius:5px;font-size:.8rem;background:#fff}
+
+/* Dashboard layout */
+.dashboard{display:flex;min-height:460px}
+.sidebar{width:240px;background:#1a202c;color:#fff;padding:16px 0;flex-shrink:0}
+.sidebar-group{margin-bottom:14px}
+.sidebar-group-label{padding:8px 20px;font-size:.73rem;color:#718096;text-transform:uppercase;letter-spacing:.4px}
+.sidebar-item{padding:9px 20px 9px 36px;font-size:.84rem;cursor:pointer;transition:background .15s;position:relative;color:#cbd5e0}
+.sidebar-item:hover{background:#2d3748;color:#fff}
+.sidebar-item.active{background:#4A90D9;color:#fff;font-weight:600}
+.sidebar-item .dot{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:#718096}
+.sidebar-item.active .dot{background:#fff}
+.main-area{flex:1;padding:22px 26px;background:#f8fafc;min-width:0}
+
+/* Page header */
+.page-header{margin-bottom:18px}
+.page-header h3{color:#2d3748;font-size:1.25rem}
+.page-header p{color:#718096;font-size:.84rem;margin-top:4px}
+
+/* Filter bar */
+.filter-bar{background:#fff;padding:16px 18px;border-radius:10px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.04);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-bar select{padding:8px 12px;border:1px solid #e2e8f0;border-radius:7px;font-size:.82rem;background:#fff;min-width:150px}
+.filter-bar input{padding:8px 12px;border:1px solid #e2e8f0;border-radius:7px;font-size:.82rem;flex:1;min-width:160px}
+.btn-search{padding:8px 18px;background:#4A90D9;color:#fff;border:none;border-radius:7px;font-size:.82rem;font-weight:600;cursor:pointer}
+.btn-new{padding:8px 18px;background:linear-gradient(90deg,#F5A623,#FFB84D);color:#fff;border:none;border-radius:7px;font-size:.82rem;font-weight:600;cursor:pointer}
+
+/* Table */
+.data-table{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.table-hdr{display:grid;grid-template-columns:.7fr 1.8fr 1fr 1fr 1.3fr 1fr;background:#f7fafc;padding:12px 18px;font-weight:600;color:#4a5568;font-size:.8rem;gap:8px}
+.table-row{display:grid;grid-template-columns:.7fr 1.8fr 1fr 1fr 1.3fr 1fr;padding:13px 18px;border-top:1px solid #edf2f7;align-items:center;font-size:.82rem;gap:8px;transition:background .15s}
+.table-row:hover{background:#f7fafc}
+.badge{padding:3px 10px;border-radius:12px;font-size:.74rem;font-weight:600;display:inline-block}
+.badge-active{background:#EBF8FF;color:#4A90D9}
+.badge-ended{background:#E2E8F0;color:#718096}
+.btn-sm{padding:4px 9px;border-radius:5px;font-size:.74rem;cursor:pointer;border:none;white-space:nowrap}
+.btn-detail{color:#4A90D9;background:transparent;text-decoration:underline}
+.btn-sync{background:#E6FFFA;color:#319795}
+.btn-edit{background:#EBF8FF;color:#4A90D9}
+.btn-del{background:#FED7D7;color:#E53E3E}
+
+/* Annotations */
+.tooltip{position:absolute;background:#F5A623;color:#fff;padding:9px 15px;border-radius:8px;font-size:.82rem;font-weight:600;box-shadow:0 4px 16px rgba(245,166,35,.45);z-index:60;pointer-events:none;opacity:0;white-space:nowrap;transition:opacity .2s}
+.tooltip::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #F5A623}
+.tooltip.left::after{left:12px}
+.tooltip.right::after{left:auto;right:12px}
+
+/* Mouse cursor */
+.cursor{position:absolute;width:20px;height:20px;pointer-events:none;z-index:100;opacity:0}
+.cursor::before{content:'';position:absolute;top:0;left:0;width:20px;height:20px;background:rgba(0,0,0,.7);border-radius:50%;transform:scale(.6)}
+.cursor.clicking::before{transform:scale(.4);background:rgba(74,144,217,.8)}
+
+/* Highlight ring */
+.highlight{position:absolute;border:3px solid rgba(245,166,35,.6);border-radius:6px;pointer-events:none;z-index:50;opacity:0;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{border-color:rgba(245,166,35,.3)}50%{border-color:rgba(245,166,35,.8)}}
+
+/* Loading spinner */
+.spinner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#4A90D9;border-radius:50%;z-index:55;opacity:0;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* Controls */
+.controls{text-align:center;padding:20px 30px;background:#fff;border-radius:14px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.ctrl-btn{padding:13px 32px;margin:0 8px;border:none;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s}
+.ctrl-play{background:linear-gradient(90deg,#4A90D9,#5B7CD5);color:#fff}
+.ctrl-play:hover{transform:scale(1.04);box-shadow:0 6px 20px rgba(74,144,217,.5)}
+.ctrl-reset{background:#e2e8f0;color:#4a5568}
+.progress-wrap{width:100%;height:4px;background:#e2e8f0;margin-top:16px;border-radius:2px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,#4A90D9,#F5A623);width:0%;transition:width .3s}
+.step-label{margin-top:8px;font-size:.84rem;color:#718096}
+
+/* Sub-page display */
+.sub-page{display:none}
+.sub-page.active{display:block}
+
+/* Stats cards */
+.stats-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.stat-box{background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 2px 6px rgba(0,0,0,.04);flex:1;min-width:120px;text-align:center}
+.stat-box .num{font-size:1.6rem;font-weight:700;color:#4A90D9}
+.stat-box .lbl{font-size:.76rem;color:#718096;margin-top:2px}
+
+/* Workflow summary cards */
+.wf-row{display:flex;gap:16px;padding:25px;flex-wrap:wrap}
+.wf-card{background:#fff;border-radius:12px;padding:22px;flex:1;min-width:260px;max-width:380px;box-shadow:0 2px 10px rgba(0,0,0,.06);opacity:0}
+.wf-card h4{color:#2d3748;margin-bottom:14px;font-size:.95rem}
+.wf-step{display:flex;gap:8px;margin-bottom:9px;font-size:.8rem;color:#4a5568}
+.wf-step .n{background:#4A90D9;color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+</style>
 </head>
 <body>
-    <div class="demo-container">
-        <div class="demo-header">
-            <h1>华云校园AI平台操作演示</h1>
-            <p>教师绩效考核 & 学生五育评价 — 面向运营人员的交互式操作指南</p>
-        </div>
+<div class="demo-container">
+<div class="demo-header">
+<h1>华云校园AI平台 操作演示</h1>
+<p>教师绩效考核 + 学生五育评价 — 完整操作流程录像</p>
+</div>
 
-        <!-- ===== Stage 1: Login ===== -->
-        <div class="stage" id="stage-login">
-            <div class="stage-title">
-                <span class="step-badge">1</span>
-                <span>系统登录 — 快速进入工作台</span>
-            </div>
-            <div class="browser-window" style="position: relative;">
-                <div class="browser-bar">
-                    <div class="browser-dots"><span></span><span></span><span></span></div>
-                    <div class="browser-url">https://pre-changpo.huayungpt.com/login</div>
-                </div>
-                <div class="login-page" id="login-page">
-                    <div class="login-card">
-                        <div class="login-logo">
-                            <h2>欢迎使用</h2>
-                            <h2 class="school-name">长坡中学</h2>
-                        </div>
-                        <div class="form-group">
-                            <label>账号（手机号）</label>
-                            <input type="text" class="form-input" id="login-account" value="15612340001" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>登录密码</label>
-                            <input type="password" class="form-input" id="login-password" value="············" readonly>
-                        </div>
-                        <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
-                            <input type="checkbox" id="agreement" checked>
-                            <label for="agreement" style="margin: 0; font-size: 0.8rem; color: #718096;">我已阅读并同意用户协议与隐私政策</label>
-                        </div>
-                        <button class="btn-primary" id="login-btn">登 录</button>
-                    </div>
-                </div>
-                <div class="success-overlay" id="login-success">验证通过，正在进入系统...</div>
-                <div class="annotation" id="anno-login-1" style="top: 55px; right: 25px;">输入手机号和密码</div>
-                <div class="annotation" id="anno-login-2" style="top: 55px; right: 25px;">必须勾选用户协议</div>
-                <div class="annotation" id="anno-login-3" style="top: 50%; left: 50%;">系统自动完成安全验证，无需手动操作</div>
-            </div>
-        </div>
+<!-- Browser Frame -->
+<div class="browser-frame" id="browser">
+<div class="browser-topbar">
+<div class="browser-dots"><span></span><span></span><span></span></div>
+<div class="browser-urlbar"><span class="lock">&#128274;</span><span id="url-display">pre-changpo.huayungpt.com/login</span></div>
+</div>
+<div class="browser-body" id="browser-body" style="position:relative;overflow:hidden">
 
-        <!-- ===== Stage 2: Teacher Performance System ===== -->
-        <div class="stage" id="stage-teacher">
-            <div class="stage-title">
-                <span class="step-badge">2</span>
-                <span>教师绩效考核系统 — 完整操作流程</span>
-            </div>
-            <div class="browser-window" style="position: relative;">
-                <div class="browser-bar">
-                    <div class="browser-dots"><span></span><span></span><span></span></div>
-                    <div class="browser-url" id="teacher-url">/teacher-evaluate/evaluateTaskManage/taskManage</div>
-                </div>
-                <!-- Top bar -->
-                <div class="top-bar">
-                    <select><option>2025-2026学年</option></select>
-                    <span>长校</span>
-                </div>
-                <!-- Dashboard -->
-                <div class="dashboard" id="teacher-dashboard">
-                    <!-- Sidebar -->
-                    <div class="sidebar" id="teacher-sidebar">
-                        <div class="sidebar-section">
-                            <div class="sidebar-title">考核任务管理</div>
-                            <div class="sidebar-item active" data-menu="task"><span class="menu-dot"></span>考核任务管理</div>
-                            <div class="sidebar-item" data-menu="declare-score"><span class="menu-dot"></span>自主申报评分</div>
-                            <div class="sidebar-item" data-menu="declare"><span class="menu-dot"></span>自主申报</div>
-                            <div class="sidebar-item" data-menu="peer"><span class="menu-dot"></span>组内互评</div>
-                            <div class="sidebar-item" data-menu="audit"><span class="menu-dot"></span>审核任务管理</div>
-                            <div class="sidebar-item" data-menu="record"><span class="menu-dot"></span>考核评分记录</div>
-                            <div class="sidebar-item" data-menu="stats"><span class="menu-dot"></span>考核结果统计</div>
-                        </div>
-                        <div class="sidebar-section">
-                            <div class="sidebar-title">管理模块</div>
-                            <div class="sidebar-item" data-menu="plan"><span class="menu-dot"></span>考核方案管理</div>
-                            <div class="sidebar-item" data-menu="settings"><span class="menu-dot"></span>系统设置</div>
-                        </div>
-                    </div>
-                    <!-- Main content area -->
-                    <div class="main-content" id="teacher-main">
-                        <!-- Sub-page: Task Management (default) -->
-                        <div class="sub-page active" id="teacher-task-page">
-                            <div class="page-header">
-                                <h2>长坡中学 · 教师绩效考核系统</h2>
-                                <p>管理教师考核任务、评分记录与结果统计 <span class="step-tag">当前16条记录</span></p>
-                            </div>
-                            <div class="filter-bar" id="teacher-filter">
-                                <select class="filter-select"><option>2025-2026学年</option></select>
-                                <select class="filter-select"><option>任务状态</option><option>未开始</option><option>进行中</option><option>已结束</option></select>
-                                <input type="text" class="filter-input" placeholder="请输入任务名称">
-                                <button class="btn-search">搜索</button>
-                                <button class="btn-accent" id="btn-new-task">+ 新增</button>
-                            </div>
-                            <div class="data-table" id="teacher-table">
-                                <div class="table-header">
-                                    <div>状态</div><div>任务名称</div><div>考核方案</div><div>参与人员</div><div>时间范围</div><div>操作</div>
-                                </div>
-                                <div class="table-row" id="trow-1">
-                                    <div><span class="status-badge status-active">进行中</span></div>
-                                    <div>测试人1</div>
-                                    <div>自主申报</div>
-                                    <div>长校</div>
-                                    <div>2025-12-04 ~ 2026-06-30</div>
-                                    <div>
-                                        <button class="action-btn btn-detail">评价详情</button>
-                                        <button class="action-btn btn-sync">同步组织/任教</button>
-                                        <button class="action-btn btn-edit">编辑</button>
-                                        <button class="action-btn btn-delete">删除</button>
-                                    </div>
-                                </div>
-                                <div class="table-row" id="trow-2">
-                                    <div><span class="status-badge status-active">进行中</span></div>
-                                    <div>自主申报支持复审</div>
-                                    <div>教师考核方案</div>
-                                    <div>长校、何丹丽</div>
-                                    <div>2025-12-03 ~ 2026-06-30</div>
-                                    <div>
-                                        <button class="action-btn btn-detail">评价详情</button>
-                                        <button class="action-btn btn-sync">同步组织/任教</button>
-                                        <button class="action-btn btn-edit">编辑</button>
-                                        <button class="action-btn btn-delete">删除</button>
-                                    </div>
-                                </div>
-                                <div class="table-row" id="trow-3">
-                                    <div><span class="status-badge status-ended">已结束</span></div>
-                                    <div>四层排名任务</div>
-                                    <div>四层排名方案</div>
-                                    <div>岳晓凤</div>
-                                    <div>2026-01-07 ~ 2026-01-09</div>
-                                    <div>
-                                        <button class="action-btn btn-detail">评价详情</button>
-                                        <button class="action-btn btn-sync">同步组织/任教</button>
-                                        <button class="action-btn btn-edit">编辑</button>
-                                        <button class="action-btn btn-delete">删除</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pagination">
-                                <span>共 16 条数据</span>
-                                <select><option>10条/页</option><option>20条/页</option><option>50条/页</option></select>
-                                <span>&lt; 1 2 &gt;</span>
-                            </div>
-                        </div>
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen" class="login-screen" style="position:absolute;inset:0;z-index:1">
+<div class="login-card" id="login-card">
+<h2>欢迎使用</h2>
+<div class="school" style="text-align:center">长坡中学</div>
+<div class="login-field"><label>账号（手机号）</label><input type="text" id="login-account" value="" readonly></div>
+<div class="login-field"><label>登录密码</label><input type="password" id="login-password" value="" readonly></div>
+<div class="login-agree"><input type="checkbox" id="login-agreement"><span>我已阅读并同意用户协议与隐私政策</span></div>
+<button class="login-btn" id="login-btn">登 录</button>
+</div>
+</div>
 
-                        <!-- Sub-page: Statistics -->
-                        <div class="sub-page" id="teacher-stats-page">
-                            <div class="page-header">
-                                <h2>考核结果统计</h2>
-                                <p>查看各考核任务的最终排名与得分明细，支持导出报表</p>
-                            </div>
-                            <div class="stats-bar">
-                                <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">考核方案类型</div></div>
-                                <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">排名模式</div></div>
-                                <div class="stat-card"><div class="stat-num">16</div><div class="stat-label">考核任务总数</div></div>
-                            </div>
-                            <div class="data-table">
-                                <div class="table-header">
-                                    <div>排名模式</div><div>说明</div><div>适用场景</div>
-                                </div>
-                                <div class="table-row">
-                                    <div><strong>两层排名</strong></div>
-                                    <div>先按大类排名，再按明细排名</div>
-                                    <div>简单考核场景</div>
-                                </div>
-                                <div class="table-row">
-                                    <div><strong>三层排名</strong></div>
-                                    <div>大类 → 中类 → 明细 三级排名</div>
-                                    <div>多维度考核</div>
-                                </div>
-                                <div class="table-row">
-                                    <div><strong>四层排名</strong></div>
-                                    <div>最复杂的四级排名体系</div>
-                                    <div>精细化考核</div>
-                                </div>
-                                <div class="table-row">
-                                    <div><strong>成员评价</strong></div>
-                                    <div>按团队互评结果排名</div>
-                                    <div>同事互评场景</div>
-                                </div>
-                            </div>
-                        </div>
+<!-- ===== APP DASHBOARD ===== -->
+<div id="app-container" style="display:none;position:absolute;inset:0;z-index:1">
+<div class="app-topbar">
+<select id="year-select"><option>2025-2026学年</option></select>
+<span id="user-name">长校</span>
+</div>
+<div class="dashboard">
 
-                        <!-- Sub-page: Plan Management -->
-                        <div class="sub-page" id="teacher-plan-page">
-                            <div class="page-header">
-                                <h2>考核方案管理</h2>
-                                <p>管理考核的"模板蓝图"——定义指标、分值与评分标准</p>
-                            </div>
-                            <div class="data-table">
-                                <div class="table-header">
-                                    <div>方案名称</div><div>用途</div><div>状态</div>
-                                </div>
-                                <div class="table-row"><div>教师考核方案</div><div>标准版教师绩效考核模板</div><div><span class="status-badge status-active">启用</span></div></div>
-                                <div class="table-row"><div>自主申报</div><div>教师自主申报类考核模板</div><div><span class="status-badge status-active">启用</span></div></div>
-                                <div class="table-row"><div>多人评分方案</div><div>需要多位评委评分的场景</div><div><span class="status-badge status-active">启用</span></div></div>
-                                <div class="table-row"><div>组织考核</div><div>按部门/组织评分的方案</div><div><span class="status-badge status-active">启用</span></div></div>
-                                <div class="table-row"><div>两层/三层/四层排名方案</div><div>多级排名体系模板</div><div><span class="status-badge status-active">启用</span></div></div>
-                                <div class="table-row"><div>成员评价方案</div><div>团队成员互评模板</div><div><span class="status-badge status-active">启用</span></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+<div class="sidebar-group">
+<div class="sidebar-group-label" id="sidebar-label">考核任务管理</div>
+<div class="sidebar-item active" data-id="taskManage"><span class="dot"></span>考核任务管理</div>
+<div class="sidebar-item" data-id="declarationReview"><span class="dot"></span>自主申报评分</div>
+<div class="sidebar-item" data-id="selfDeclaration"><span class="dot"></span>自主申报</div>
+<div class="sidebar-item" data-id="groupPeerReview"><span class="dot"></span>组内互评</div>
+<div class="sidebar-item" data-id="auditTaskManage"><span class="dot"></span>审核任务管理</div>
+<div class="sidebar-item" data-id="evaluateRecord"><span class="dot"></span>考核评分记录</div>
+<div class="sidebar-item" data-id="resultStats"><span class="dot"></span>考核结果统计</div>
+</div>
+<div class="sidebar-group">
+<div class="sidebar-group-label">管理模块</div>
+<div class="sidebar-item" data-id="programManage"><span class="dot"></span>考核方案管理</div>
+<div class="sidebar-item" data-id="systemSettings"><span class="dot"></span>系统设置</div>
+</div>
+</div>
 
-                <!-- Annotations -->
-                <div class="highlight-box" id="hl-sidebar" style="top: 52px; left: 8px; width: 246px; height: 420px;"></div>
-                <div class="highlight-box" id="hl-filter" style="top: 58px; left: 260px; width: calc(100% - 268px); height: 56px;"></div>
-                <div class="highlight-box" id="hl-table" style="top: 132px; left: 260px; width: calc(100% - 268px); height: 220px;"></div>
+<!-- Main Area -->
+<div class="main-area" id="main-area">
+<!-- Page: Task Management -->
+<div class="sub-page active" id="page-taskManage">
+<div class="page-header"><h3>长坡中学 · 教师绩效考核系统</h3><p>管理教师考核任务、评分记录与结果统计 · 当前 16 条记录</p></div>
+<div class="filter-bar">
+<select><option>2025-2026学年</option></select>
+<select><option>任务状态</option><option>未开始</option><option>进行中</option><option>已结束</option></select>
+<input type="text" placeholder="请输入任务名称">
+<button class="btn-search">搜 索</button>
+<button class="btn-new">+ 新增</button>
+</div>
+<div class="data-table">
+<div class="table-hdr"><div>状态</div><div>任务名称</div><div>考核方案</div><div>参与人员</div><div>时间范围</div><div>操作</div></div>
+<div class="table-row"><div><span class="badge badge-active">进行中</span></div><div>测试人1</div><div>自主申报</div><div>长校</div><div>2025-12-04 ~ 2026-06-30</div><div><button class="btn-sm btn-detail">评价详情</button><button class="btn-sm btn-sync">同步</button><button class="btn-sm btn-edit">编辑</button><button class="btn-sm btn-del">删除</button></div></div>
+<div class="table-row"><div><span class="badge badge-active">进行中</span></div><div>自主申报支持复审</div><div>教师考核方案</div><div>长校、何丹丽</div><div>2025-12-03 ~ 2026-06-30</div><div><button class="btn-sm btn-detail">评价详情</button><button class="btn-sm btn-sync">同步</button><button class="btn-sm btn-edit">编辑</button><button class="btn-sm btn-del">删除</button></div></div>
+<div class="table-row"><div><span class="badge badge-ended">已结束</span></div><div>四层排名任务</div><div>四层排名方案</div><div>岳晓凤</div><div>2026-01-07 ~ 2026-01-09</div><div><button class="btn-sm btn-detail">评价详情</button><button class="btn-sm btn-sync">同步</button><button class="btn-sm btn-edit">编辑</button><button class="btn-sm btn-del">删除</button></div></div>
+</div>
+<div style="padding:12px 18px;text-align:right;font-size:.8rem;color:#718096;background:#fff;border-top:1px solid #edf2f7">共 16 条数据 &nbsp; 10条/页 &nbsp; &lt; 1 2 &gt;</div>
+</div>
 
-                <div class="annotation left-arrow" id="anno-t-1" style="top: 120px; left: 270px;">左侧9个菜单覆盖考核全流程</div>
-                <div class="annotation" id="anno-t-2" style="top: 70px; left: 450px;">筛选学年、状态，或按名称搜索</div>
-                <div class="annotation" id="anno-t-3" style="top: 70px; right: 40px;">点击「新增」创建考核任务</div>
-                <div class="annotation right-arrow" id="anno-t-4" style="top: 250px; right: 20px;">每行4个操作：评价详情 | 同步 | 编辑 | 删除</div>
-                <div class="annotation" id="anno-t-5" style="top: 58%; left: 280px;">点击侧边栏「考核结果统计」查看排名报表</div>
-                <div class="annotation" id="anno-t-6" style="top: 58%; left: 280px;">点击「考核方案管理」管理方案模板</div>
-                <div class="annotation" id="anno-t-7" style="top: 200px; left: 350px;">8种方案类型，覆盖不同考核场景</div>
-                <div class="annotation" id="anno-t-8" style="top: 200px; left: 350px;">4种排名模式：两层 / 三层 / 四层 / 成员评价</div>
-            </div>
-        </div>
+<!-- Page: Self Declaration -->
+<div class="sub-page" id="page-selfDeclaration">
+<div class="page-header"><h3>自主申报</h3><p>教师自主提交考核项目申报，待审核后计入考核评分</p></div>
+<div class="filter-bar"><select><option>2025-2026学年</option></select><input type="text" placeholder="请输入申报名称"><button class="btn-search">搜 索</button><button class="btn-new">+ 新增申报</button></div>
+<div class="data-table">
+<div class="table-hdr"><div>状态</div><div>申报名称</div><div>申报人</div><div>申报时间</div><div>审核状态</div><div>操作</div></div>
+<div class="table-row"><div><span class="badge badge-active">进行中</span></div><div>教学成果申报</div><div>长校</div><div>2025-12-15</div><div>待审核</div><div><button class="btn-sm btn-detail">查看</button><button class="btn-sm btn-edit">编辑</button></div></div>
+</div>
+</div>
 
-        <!-- ===== Stage 3: Student Wuyu System ===== -->
-        <div class="stage" id="stage-student">
-            <div class="stage-title">
-                <span class="step-badge">3</span>
-                <span>学生五育评价系统 — 完整操作流程</span>
-            </div>
-            <div class="browser-window" style="position: relative;">
-                <div class="browser-bar">
-                    <div class="browser-dots"><span></span><span></span><span></span></div>
-                    <div class="browser-url">/student-evaluate/evaluateTaskManage/taskManage?rBK=1</div>
-                </div>
-                <div class="top-bar">
-                    <select><option>2025-2026学年第二学期</option></select>
-                    <span>长校</span>
-                </div>
-                <div class="dashboard" id="student-dashboard">
-                    <div class="sidebar" id="student-sidebar">
-                        <div class="sidebar-section">
-                            <div class="sidebar-title">评价任务管理</div>
-                            <div class="sidebar-item active" data-menu="task"><span class="menu-dot"></span>评价任务管理</div>
-                            <div class="sidebar-item" data-menu="audit"><span class="menu-dot"></span>申报审核</div>
-                            <div class="sidebar-item" data-menu="record"><span class="menu-dot"></span>评价记录</div>
-                            <div class="sidebar-item" data-menu="result"><span class="menu-dot"></span>评价结果</div>
-                        </div>
-                        <div class="sidebar-section">
-                            <div class="sidebar-title">管理模块</div>
-                            <div class="sidebar-item" data-menu="plan"><span class="menu-dot"></span>评价方案管理</div>
-                            <div class="sidebar-item" data-menu="settings"><span class="menu-dot"></span>系统管理</div>
-                        </div>
-                    </div>
-                    <div class="main-content" id="student-main">
-                        <!-- Sub-page: Task Management -->
-                        <div class="sub-page active" id="student-task-page">
-                            <div class="page-header">
-                                <h2>学生五育评价系统</h2>
-                                <p>德智体美劳全方位学生综合素质评价 <span class="step-tag">五育：德·智·体·美·劳</span></p>
-                            </div>
-                            <div class="filter-bar">
-                                <select class="filter-select"><option>2025-2026学年第二学期</option></select>
-                                <select class="filter-select"><option>任务状态</option><option>已结束</option><option>未开始</option><option>进行中</option></select>
-                                <input type="text" class="filter-input" placeholder="请输入任务名称">
-                                <button class="btn-search">搜索</button>
-                                <button class="btn-accent">+ 新增</button>
-                            </div>
-                            <div class="data-table" id="student-table">
-                                <div class="table-header">
-                                    <div>状态</div><div>任务名称</div><div>评价方案</div><div>参与教师/学科</div><div>时间范围</div><div>操作</div>
-                                </div>
-                                <div class="table-row" id="srow-1">
-                                    <div><span class="status-badge status-ended">已结束</span></div>
-                                    <div>全校年度学生评分2025-2026</div>
-                                    <div>学生年度评价方案</div>
-                                    <div>长坡教师001、班主任</div>
-                                    <div>2025-09-01 ~ 2026-01-31</div>
-                                    <div>
-                                        <button class="action-btn btn-detail">评价详情</button>
-                                        <button class="action-btn btn-sync">同步任教</button>
-                                        <button class="action-btn btn-edit">编辑</button>
-                                        <button class="action-btn btn-delete">删除</button>
-                                    </div>
-                                </div>
-                                <div class="table-row" id="srow-2">
-                                    <div><span class="status-badge status-active">进行中</span></div>
-                                    <div>测试语文组评价任务</div>
-                                    <div>测试语文组评价方案</div>
-                                    <div>语文</div>
-                                    <div>2025-09-01 ~ 2026-07-31</div>
-                                    <div>
-                                        <button class="action-btn btn-detail">评价详情</button>
-                                        <button class="action-btn btn-sync">同步任教</button>
-                                        <button class="action-btn btn-edit">编辑</button>
-                                        <button class="action-btn btn-delete">删除</button>
-                                    </div>
-                                </div>
-                                <div class="table-row" id="srow-3">
-                                    <div><span class="status-badge status-ended">已结束</span></div>
-                                    <div>本校培养目标达成度评价</div>
-                                    <div>本校培养目标达成度</div>
-                                    <div>语文、李总、长校等</div>
-                                    <div>2025-09-01 ~ 2026-01-31</div>
-                                    <div>
-                                        <button class="action-btn btn-detail">评价详情</button>
-                                        <button class="action-btn btn-sync">同步任教</button>
-                                        <button class="action-btn btn-edit">编辑</button>
-                                        <button class="action-btn btn-delete">删除</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Sub-page: Evaluation Results -->
-                        <div class="sub-page" id="student-result-page">
-                            <div class="page-header">
-                                <h2>评价结果</h2>
-                                <p>按班级/年级/个人查看五育得分，支持雷达图可视化与数据导出</p>
-                            </div>
-                            <div class="stats-bar">
-                                <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">评价方案类型</div></div>
-                                <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">评价维度（五育）</div></div>
-                                <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">查看维度</div></div>
-                            </div>
-                            <div class="data-table">
-                                <div class="table-header">
-                                    <div>查看维度</div><div>说明</div>
-                                </div>
-                                <div class="table-row"><div><strong>按班级查看</strong></div><div>全班学生五育各维度得分汇总与排名</div></div>
-                                <div class="table-row"><div><strong>按年级查看</strong></div><div>年级整体五育发展水平横向对比</div></div>
-                                <div class="table-row"><div><strong>按个人查看</strong></div><div>单个学生五育雷达图，德智体美劳各维度得分可视化</div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Page: Declaration Review -->
+<div class="sub-page" id="page-declarationReview">
+<div class="page-header"><h3>自主申报评分</h3><p>对教师提交的自主申报项目进行评分，支持复审流程</p></div>
+<div class="filter-bar"><select><option>2025-2026学年</option></select><select><option>审核状态</option></select><input type="text" placeholder="请输入申报名称"><button class="btn-search">搜 索</button></div>
+<div class="data-table">
+<div class="table-hdr"><div>申报名称</div><div>申报人</div><div>得分</div><div>审核状态</div><div>操作</div></div>
+<div class="table-row"><div>教学成果申报</div><div>长校</div><div>85</div><div>已通过</div><div><button class="btn-sm btn-detail">评分详情</button></div></div>
+</div>
+</div>
 
-                <!-- Annotations -->
-                <div class="highlight-box" id="hl-s-sidebar" style="top: 52px; left: 8px; width: 246px; height: 340px;"></div>
-                <div class="annotation left-arrow" id="anno-s-1" style="top: 100px; left: 270px;">6个菜单覆盖五育评价全流程</div>
-                <div class="annotation" id="anno-s-2" style="top: 70px; right: 50px;">按学期、状态筛选评价任务</div>
-                <div class="annotation right-arrow" id="anno-s-3" style="top: 250px; right: 20px;">每行操作：评价详情 | 同步任教 | 编辑 | 删除</div>
-                <div class="annotation" id="anno-s-4" style="top: 50%; left: 280px;">点击「评价结果」查看五育雷达图与对比报表</div>
-                <div class="annotation" id="anno-s-5" style="top: 180px; left: 350px;">学生五育雷达图：德·智·体·美·劳 可视化展示</div>
-            </div>
-        </div>
+<!-- Page: Group Peer Review -->
+<div class="sub-page" id="page-groupPeerReview">
+<div class="page-header"><h3>组内互评</h3><p>同组教师互相评分，支持匿名评价与多维度打分</p></div>
+<div class="filter-bar"><select><option>2025-2026学年</option></select><select><option>评价组</option></select><button class="btn-search">搜 索</button></div>
+<div class="data-table">
+<div class="table-hdr"><div>评价组</div><div>成员数</div><div>已完成</div><div>进度</div><div>操作</div></div>
+<div class="table-row"><div>语文教研组</div><div>8</div><div>6</div><div>75%</div><div><button class="btn-sm btn-detail">查看详情</button></div></div>
+</div>
+</div>
 
-        <!-- ===== Stage 4: Workflow Summary ===== -->
-        <div class="stage" id="stage-workflow">
-            <div class="stage-title">
-                <span class="step-badge">4</span>
-                <span>常用工作流程速查</span>
-            </div>
-            <div class="browser-window" style="padding: 30px; background: #f8fafc;">
-                <div class="workflow-cards">
-                    <div class="workflow-card" id="wf-card-1">
-                        <h4>发起一次新考核</h4>
-                        <div class="workflow-step"><span class="step-num">1</span><span>进入「考核方案管理」确认方案存在</span></div>
-                        <div class="workflow-step"><span class="step-num">2</span><span>回到「考核任务管理」→ 点击「新增」</span></div>
-                        <div class="workflow-step"><span class="step-num">3</span><span>填写任务名称、时间、选择方案和参与教师</span></div>
-                        <div class="workflow-step"><span class="step-num">4</span><span>保存后点击「同步组织/任教」关联信息</span></div>
-                        <div class="workflow-step"><span class="step-num">5</span><span>任务开始 → 教师收到通知 → 开始评分</span></div>
-                    </div>
-                    <div class="workflow-card" id="wf-card-2">
-                        <h4>查看评分结果</h4>
-                        <div class="workflow-step"><span class="step-num">1</span><span>教师考核：进入「考核结果统计」查看排名</span></div>
-                        <div class="workflow-step"><span class="step-num">2</span><span>学生评价：进入「评价结果」查看五育得分</span></div>
-                        <div class="workflow-step"><span class="step-num">3</span><span>支持导出报表，用于打印存档</span></div>
-                    </div>
-                    <div class="workflow-card" id="wf-card-3">
-                        <h4>学期切换与数据维护</h4>
-                        <div class="workflow-step"><span class="step-num">1</span><span>顶部选择器切换学年/学期，数据自动刷新</span></div>
-                        <div class="workflow-step"><span class="step-num">2</span><span>教师换班后点击「同步任教」更新</span></div>
-                        <div class="workflow-step"><span class="step-num">3</span><span>过期任务可删除（数据不可恢复，慎用）</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Page: Audit Task -->
+<div class="sub-page" id="page-auditTaskManage">
+<div class="page-header"><h3>审核任务管理</h3><p>管理员审核各项考核评分，确保评分公正合理</p></div>
+<div class="filter-bar"><select><option>2025-2026学年</option></select><select><option>审核状态</option></select><button class="btn-search">搜 索</button></div>
+<div class="data-table">
+<div class="table-hdr"><div>任务名称</div><div>待审核</div><div>已审核</div><div>进度</div><div>操作</div></div>
+<div class="table-row"><div>测试人1</div><div>3</div><div>12</div><div>80%</div><div><button class="btn-sm btn-detail">审核</button></div></div>
+</div>
+</div>
 
-        <!-- Controls -->
-        <div class="controls">
-            <button class="control-btn btn-start" id="play-btn">播放演示</button>
-            <button class="control-btn" id="reset-btn" style="background: #e2e8f0; color: #4a5568;">重置</button>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <div style="margin-top: 10px; color: #718096; font-size: 0.9rem;" id="step-indicator">点击「播放演示」开始</div>
-        </div>
-    </div>
+<!-- Page: Evaluate Record -->
+<div class="sub-page" id="page-evaluateRecord">
+<div class="page-header"><h3>考核评分记录</h3><p>查看所有已完成评分的详细记录，支持按教师/方案筛选</p></div>
+<div class="filter-bar"><select><option>2025-2026学年</option></select><select><option>考核方案</option></select><input type="text" placeholder="请输入教师名称"><button class="btn-search">搜 索</button></div>
+<div class="data-table">
+<div class="table-hdr"><div>教师</div><div>考核方案</div><div>总分</div><div>排名</div><div>操作</div></div>
+<div class="table-row"><div>长校</div><div>教师考核方案</div><div>92.5</div><div>1</div><div><button class="btn-sm btn-detail">明细</button></div></div>
+</div>
+</div>
 
-    <script>
-        let isPlaying = false;
-        let masterTimeline = gsap.timeline({ paused: true });
+<!-- Page: Result Statistics -->
+<div class="sub-page" id="page-resultStats">
+<div class="page-header"><h3>考核结果统计</h3><p>按排名模式查看考核统计分析，支持导出报表</p></div>
+<div class="stats-row">
+<div class="stat-box"><div class="num">8</div><div class="lbl">考核方案类型</div></div>
+<div class="stat-box"><div class="num">4</div><div class="lbl">排名模式</div></div>
+<div class="stat-box"><div class="num">16</div><div class="lbl">考核任务总数</div></div>
+</div>
+<div class="data-table">
+<div class="table-hdr"><div>排名模式</div><div>说明</div><div>适用场景</div></div>
+<div class="table-row"><div><strong>两层排名</strong></div><div>先按大类排名，再按明细排名</div><div>简单考核场景</div></div>
+<div class="table-row"><div><strong>三层排名</strong></div><div>大类 → 中类 → 明细 三级排名</div><div>多维度考核</div></div>
+<div class="table-row"><div><strong>四层排名</strong></div><div>最复杂的四级排名体系</div><div>精细化考核</div></div>
+<div class="table-row"><div><strong>成员评价</strong></div><div>按团队互评结果排名</div><div>同事互评场景</div></div>
+</div>
+</div>
 
-        // Helper: show annotation briefly
-        function showAnno(id, delay = 2.5) {
-            return gsap.timeline()
-                .to(id, { opacity: 1, duration: 0.3, ease: 'power2.out' })
-                .to(id, { opacity: 0, duration: 0.25, delay: delay });
-        }
+<!-- Page: Program Management -->
+<div class="sub-page" id="page-programManage">
+<div class="page-header"><h3>考核方案管理</h3><p>管理考核的"模板蓝图"——定义指标、分值与评分标准</p></div>
+<div class="filter-bar"><select><option>方案类型</option></select><button class="btn-new">+ 新增方案</button></div>
+<div class="data-table">
+<div class="table-hdr"><div>方案名称</div><div>用途</div><div>状态</div></div>
+<div class="table-row"><div>教师考核方案</div><div>标准版教师绩效考核模板</div><div><span class="badge badge-active">启用</span></div></div>
+<div class="table-row"><div>自主申报</div><div>教师自主申报类考核模板</div><div><span class="badge badge-active">启用</span></div></div>
+<div class="table-row"><div>多人评分方案</div><div>需要多位评委评分的场景</div><div><span class="badge badge-active">启用</span></div></div>
+<div class="table-row"><div>组织考核</div><div>按部门/组织评分的方案</div><div><span class="badge badge-active">启用</span></div></div>
+<div class="table-row"><div>两层/三层/四层排名方案</div><div>多级排名体系模板</div><div><span class="badge badge-active">启用</span></div></div>
+<div class="table-row"><div>成员评价方案</div><div>团队成员互评模板</div><div><span class="badge badge-active">启用</span></div></div>
+</div>
+</div>
 
-        // Helper: highlight a box
-        function showHighlight(id, delay = 2) {
-            return gsap.timeline()
-                .to(id, { opacity: 1, duration: 0.3 })
-                .to(id, { opacity: 0, duration: 0.3, delay: delay });
-        }
+<!-- Page: System Settings -->
+<div class="sub-page" id="page-systemSettings">
+<div class="page-header"><h3>系统设置</h3><p>配置学校基本信息、学年学期、用户权限等系统参数</p></div>
+<div class="data-table">
+<div class="table-hdr"><div>设置项</div><div>当前值</div><div>操作</div></div>
+<div class="table-row"><div>学校名称</div><div>长坡中学</div><div><button class="btn-sm btn-edit">修改</button></div></div>
+<div class="table-row"><div>当前学年</div><div>2025-2026</div><div><button class="btn-sm btn-edit">切换</button></div></div>
+<div class="table-row"><div>考核学年</div><div>2025-2026学年</div><div><button class="btn-sm btn-edit">修改</button></div></div>
+</div>
+</div>
+</div>
 
-        function buildTimeline() {
-            masterTimeline.clear();
+</div><!-- /dashboard -->
+</div><!-- /app-container -->
 
-            // ===== STAGE 1: Login =====
-            masterTimeline
-                // Login page entrance
-                .from('#login-page', { opacity: 0, y: 40, duration: 0.5 })
-                .add(showAnno('#anno-login-1', 2))
-                // Highlight form fields sequentially
-                .to('#login-account', { boxShadow: '0 0 0 3px rgba(245,166,35,0.4)', duration: 0.3 })
-                .to('#login-account', { boxShadow: 'none', duration: 0.2, delay: 0.8 })
-                .to('#login-password', { boxShadow: '0 0 0 3px rgba(245,166,35,0.4)', duration: 0.3 })
-                .to('#login-password', { boxShadow: 'none', duration: 0.2, delay: 0.8 })
-                .add(showAnno('#anno-login-2', 2))
-                .to('#agreement', { scale: 1.3, duration: 0.2 })
-                .to('#agreement', { scale: 1, duration: 0.2 })
-                // Click login button
-                .to('#login-btn', { scale: 0.95, duration: 0.1 })
-                .to('#login-btn', { scale: 1, duration: 0.1 })
-                // Show success (no captcha!)
-                .to('#login-success', { opacity: 1, duration: 0.5 })
-                .to('#login-success', { opacity: 0, duration: 0.4, delay: 1.2 });
+<!-- Mouse Cursor -->
+<div class="cursor" id="cursor"></div>
 
-            // ===== STAGE 2: Teacher Performance System =====
-            // Phase 1: Dashboard appearance
-            masterTimeline
-                .set('#teacher-dashboard', { opacity: 0 })
-                .to('#teacher-dashboard', { opacity: 1, duration: 0.5 })
-                // Sidebar walkthrough
-                .add(showHighlight('#hl-sidebar', 0.8))
-                .add(showAnno('#anno-t-1', 3))
-                // Animate each sidebar item
-                .from('#teacher-sidebar .sidebar-item', {
-                    opacity: 0,
-                    x: -30,
-                    stagger: 0.08,
-                    duration: 0.35,
-                    ease: 'power2.out'
-                })
-                // Filter bar
-                .add(showHighlight('#hl-filter', 1))
-                .add(showAnno('#anno-t-2', 2.5))
-                .add(showAnno('#anno-t-3', 2.5))
-                .from('#teacher-filter', { opacity: 0, y: 15, duration: 0.4 })
-                // Table rows
-                .add(showHighlight('#hl-table', 1))
-                .from('#trow-1', { opacity: 0, y: 20, duration: 0.4 })
-                .from('#trow-2', { opacity: 0, y: 20, duration: 0.4 })
-                .from('#trow-3', { opacity: 0, y: 20, duration: 0.4 })
-                .add(showAnno('#anno-t-4', 3))
-                // Pulse action buttons
-                .to('#trow-1 .action-btn', {
-                    scale: 1.08,
-                    stagger: 0.08,
-                    duration: 0.25,
-                    yoyo: true,
-                    repeat: 1
-                });
+<!-- Floating Annotations -->
+<div class="tooltip" id="tip" style="top:0;left:0">提示</div>
 
-            // Phase 2: Navigate to Statistics page
-            masterTimeline
-                .add(showAnno('#anno-t-5', 2.5))
-                // Highlight 考核结果统计 in sidebar
-                .to('#teacher-sidebar [data-menu="stats"]', {
-                    backgroundColor: '#F5A623',
-                    duration: 0.4
-                })
-                .to('#teacher-sidebar [data-menu="stats"]', {
-                    backgroundColor: '',
-                    duration: 0.3,
-                    delay: 1.5
-                })
-                // Switch to stats page
-                .set('#teacher-task-page', { display: 'none' })
-                .set('#teacher-stats-page', { display: 'flex', flexDirection: 'column', opacity: 0 })
-                .to('#teacher-stats-page', { opacity: 1, duration: 0.4 })
-                .add(showAnno('#anno-t-8', 3))
-                .from('#teacher-stats-page .stat-card', {
-                    opacity: 0,
-                    y: 20,
-                    stagger: 0.12,
-                    duration: 0.35
-                })
-                .from('#teacher-stats-page .table-row', {
-                    opacity: 0,
-                    x: -20,
-                    stagger: 0.1,
-                    duration: 0.3
-                });
+<div class="spinner" id="spinner"></div>
+</div><!-- /browser-body -->
+</div><!-- /browser-frame -->
 
-            // Phase 3: Navigate to Plan Management
-            masterTimeline
-                .add(showAnno('#anno-t-6', 2.5))
-                .to('#teacher-sidebar [data-menu="plan"]', {
-                    backgroundColor: '#F5A623',
-                    duration: 0.4
-                })
-                .to('#teacher-sidebar [data-menu="plan"]', {
-                    backgroundColor: '',
-                    duration: 0.3,
-                    delay: 1.5
-                })
-                .set('#teacher-stats-page', { display: 'none' })
-                .set('#teacher-plan-page', { display: 'flex', flexDirection: 'column', opacity: 0 })
-                .to('#teacher-plan-page', { opacity: 1, duration: 0.4 })
-                .add(showAnno('#anno-t-7', 3))
-                .from('#teacher-plan-page .table-row', {
-                    opacity: 0,
-                    y: 15,
-                    stagger: 0.1,
-                    duration: 0.3
-                });
+<!-- Workflow Summary Stage -->
+<div id="workflow-stage" style="background:#fff;border-radius:14px;padding:30px;box-shadow:0 30px 60px rgba(0,0,0,.5);margin-bottom:25px;display:none">
+<div style="font-size:1.2rem;font-weight:700;color:#2d3748;margin-bottom:20px">常用工作流程速查</div>
+<div class="wf-row">
+<div class="wf-card" id="wf1"><h4>发起一次新考核</h4><div class="wf-step"><span class="n">1</span><span>进入「考核方案管理」确认方案模板存在</span></div><div class="wf-step"><span class="n">2</span><span>进入「考核任务管理」→ 点击「新增」</span></div><div class="wf-step"><span class="n">3</span><span>填写任务名称、选择考核方案、设置时间范围</span></div><div class="wf-step"><span class="n">4</span><span>添加参与教师 → 点击「同步组织/任教」</span></div><div class="wf-step"><span class="n">5</span><span>任务开始后，教师收到通知并开始评分</span></div></div>
+<div class="wf-card" id="wf2"><h4>完成评分与查看结果</h4><div class="wf-step"><span class="n">1</span><span>教师通过「自主申报」提交考核材料</span></div><div class="wf-step"><span class="n">2</span><span>评分人通过「自主申报评分」或「组内互评」打分</span></div><div class="wf-step"><span class="n">3</span><span>管理员通过「审核任务管理」审核评分</span></div><div class="wf-step"><span class="n">4</span><span>查看「考核评分记录」确认所有评分完成</span></div><div class="wf-step"><span class="n">5</span><span>进入「考核结果统计」查看排名，导出报表</span></div></div>
+<div class="wf-card" id="wf3"><h4>学期切换与数据维护</h4><div class="wf-step"><span class="n">1</span><span>顶部学年选择器切换学期，数据自动刷新</span></div><div class="wf-step"><span class="n">2</span><span>教师变动后点击「同步组织/任教」更新</span></div><div class="wf-step"><span class="n">3</span><span>过期任务可直接删除（数据不可恢复）</span></div><div class="wf-step"><span class="n">4</span><span>「系统设置」中可修改学校基本配置</span></div></div>
+</div>
+</div>
 
-            // ===== STAGE 3: Student Wuyu System =====
-            masterTimeline
-                // Hide teacher stage, show student stage
-                .set('#teacher-dashboard', { opacity: 0 })
-                .set('#student-dashboard', { opacity: 0 })
-                .to('#student-dashboard', { opacity: 1, duration: 0.5 })
-                // Sidebar
-                .add(showHighlight('#hl-s-sidebar', 0.8))
-                .add(showAnno('#anno-s-1', 3))
-                .from('#student-sidebar .sidebar-item', {
-                    opacity: 0,
-                    x: -30,
-                    stagger: 0.1,
-                    duration: 0.35,
-                    ease: 'power2.out'
-                })
-                // Filter
-                .add(showAnno('#anno-s-2', 2.5))
-                .from('#student-task-page .filter-bar', { opacity: 0, y: 15, duration: 0.4 })
-                // Table
-                .from('#srow-1', { opacity: 0, y: 20, duration: 0.4 })
-                .from('#srow-2', { opacity: 0, y: 20, duration: 0.4 })
-                .from('#srow-3', { opacity: 0, y: 20, duration: 0.4 })
-                .add(showAnno('#anno-s-3', 3))
-                .to('#srow-1 .action-btn', {
-                    scale: 1.08,
-                    stagger: 0.08,
-                    duration: 0.25,
-                    yoyo: true,
-                    repeat: 1
-                });
+<!-- Controls -->
+<div class="controls">
+<button class="ctrl-btn ctrl-play" id="play-btn">&#9654; 播放演示</button>
+<button class="ctrl-btn ctrl-reset" id="reset-btn">&#8634; 重置</button>
+<div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+<div class="step-label" id="step-label">点击播放开始 — 演示教师绩效考核系统全部9个菜单</div>
+</div>
+</div>
 
-            // Phase 2: Navigate to Evaluation Results
-            masterTimeline
-                .add(showAnno('#anno-s-4', 2.5))
-                .to('#student-sidebar [data-menu="result"]', {
-                    backgroundColor: '#F5A623',
-                    duration: 0.4
-                })
-                .to('#student-sidebar [data-menu="result"]', {
-                    backgroundColor: '',
-                    duration: 0.3,
-                    delay: 1.5
-                })
-                .set('#student-task-page', { display: 'none' })
-                .set('#student-result-page', { display: 'flex', flexDirection: 'column', opacity: 0 })
-                .to('#student-result-page', { opacity: 1, duration: 0.4 })
-                .add(showAnno('#anno-s-5', 3))
-                .from('#student-result-page .stat-card', {
-                    opacity: 0,
-                    y: 20,
-                    stagger: 0.12,
-                    duration: 0.35
-                })
-                .from('#student-result-page .table-row', {
-                    opacity: 0,
-                    x: -20,
-                    stagger: 0.1,
-                    duration: 0.3
-                });
+<script>
+let tl = gsap.timeline({paused:true});
+let playing = false;
 
-            // ===== STAGE 4: Workflow Summary =====
-            masterTimeline
-                .set('#student-dashboard', { opacity: 0 })
-                .from('#wf-card-1', { opacity: 0, y: 30, duration: 0.5 })
-                .from('#wf-card-1 .workflow-step', {
-                    opacity: 0,
-                    x: -15,
-                    stagger: 0.12,
-                    duration: 0.3
-                })
-                .from('#wf-card-2', { opacity: 0, y: 30, duration: 0.5 })
-                .from('#wf-card-2 .workflow-step', {
-                    opacity: 0,
-                    x: -15,
-                    stagger: 0.12,
-                    duration: 0.3
-                })
-                .from('#wf-card-3', { opacity: 0, y: 30, duration: 0.5 })
-                .from('#wf-card-3 .workflow-step', {
-                    opacity: 0,
-                    x: -15,
-                    stagger: 0.12,
-                    duration: 0.3
-                });
-        }
+const cursor = document.getElementById('cursor');
+const tip = document.getElementById('tip');
+const spinner = document.getElementById('spinner');
+const urlDisp = document.getElementById('url-display');
+const stepLabel = document.getElementById('step-label');
+const progressBar = document.getElementById('progress');
+const sidebar = document.getElementById('sidebar');
+const loginScreen = document.getElementById('login-screen');
+const appContainer = document.getElementById('app-container');
+const mainArea = document.getElementById('main-area');
 
-        buildTimeline();
-
-        // Progress bar update
-        masterTimeline.eventCallback('onUpdate', function() {
-            const progress = masterTimeline.progress();
-            gsap.set('#progress-fill', { width: (progress * 100) + '%' });
-
-            let step = '';
-            if (progress < 0.08) step = '步骤 1/4：登录系统';
-            else if (progress < 0.25) step = '步骤 2/4：教师绩效考核 — 任务管理与侧边栏导航';
-            else if (progress < 0.45) step = '步骤 2/4：教师绩效考核 — 考核方案与结果统计';
-            else if (progress < 0.65) step = '步骤 3/4：学生五育评价 — 任务管理与菜单导航';
-            else if (progress < 0.85) step = '步骤 3/4：学生五育评价 — 五育结果可视化';
-            else step = '步骤 4/4：常用工作流程速查';
-
-            document.getElementById('step-indicator').textContent = step + ' (' + Math.round(progress * 100) + '%)';
+// Helper: move cursor and show tooltip
+function moveCursor(x, y, tipText, tipPos, duration) {
+    const b = document.getElementById('browser-body');
+    const rect = b.getBoundingClientRect();
+    // x, y are relative to browser-body
+    return gsap.timeline()
+        .set(cursor, {opacity:1})
+        .to(cursor, {left:x, top:y, duration:duration||0.6, ease:'power2.out'})
+        .call(() => {
+            if (tipText) showTip(x, y, tipText, tipPos);
         });
+}
 
-        // Reset all sub-pages on complete
-        masterTimeline.eventCallback('onComplete', function() {
-            document.getElementById('step-indicator').textContent = '演示完成 — 共展示两个系统、15个菜单项、4种排名模式';
-        });
+function showTip(x, y, text, pos) {
+    gsap.set(tip, {
+        left: pos==='right' ? x - 200 : (pos==='left' ? x + 40 : x - 60),
+        top: y - 50,
+        opacity: 1,
+        textContent: text
+    });
+    tip.className = 'tooltip ' + (pos||'');
+}
 
-        // Play/Pause
-        document.getElementById('play-btn').addEventListener('click', function() {
-            if (isPlaying) {
-                masterTimeline.pause();
-                this.textContent = '继续演示';
-            } else {
-                if (masterTimeline.progress() >= 1) {
-                    masterTimeline.restart();
-                } else {
-                    masterTimeline.play();
-                }
-                this.textContent = '暂停';
-            }
-            isPlaying = !isPlaying;
-        });
+function hideTip() {
+    gsap.to(tip, {opacity:0, duration:0.2});
+}
 
-        // Reset
-        document.getElementById('reset-btn').addEventListener('click', function() {
-            masterTimeline.pause().progress(0);
-            isPlaying = false;
-            document.getElementById('play-btn').textContent = '播放演示';
-            gsap.set('#progress-fill', { width: '0%' });
-            document.getElementById('step-indicator').textContent = '点击「播放演示」开始';
+function clickCursor() {
+    return gsap.timeline()
+        .call(() => cursor.classList.add('clicking'))
+        .to({}, {duration:0.2})
+        .call(() => cursor.classList.remove('clicking'));
+}
 
-            // Reset all sub-pages to initial state
-            document.querySelectorAll('.sub-page').forEach(p => {
-                p.style.display = '';
-                p.style.opacity = '';
-                p.style.flexDirection = '';
-            });
-            document.getElementById('teacher-task-page').classList.add('active');
-            document.getElementById('teacher-stats-page').classList.remove('active');
-            document.getElementById('teacher-plan-page').classList.remove('active');
-            document.getElementById('student-task-page').classList.add('active');
-            document.getElementById('student-result-page').classList.remove('active');
+function hideCursor() {
+    return gsap.to(cursor, {opacity:0, duration:0.3});
+}
 
-            // Reset all annotations and highlights
-            document.querySelectorAll('.annotation, .highlight-box, .success-overlay').forEach(el => {
-                el.style.opacity = '0';
-            });
+function setUrl(url) {
+    return gsap.timeline().call(() => { urlDisp.textContent = url; });
+}
 
-            // Reset dashboard visibility
-            document.getElementById('teacher-dashboard').style.opacity = '1';
-            document.getElementById('student-dashboard').style.opacity = '1';
+function showSpinner(dur) {
+    return gsap.timeline()
+        .set(spinner, {opacity:1})
+        .to({}, {duration:dur||0.8})
+        .set(spinner, {opacity:0});
+}
 
-            // Rebuild timeline (since sub-pages were reset)
+function switchSidebar(id) {
+    return gsap.timeline().call(() => {
+        document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+        const target = document.querySelector(`.sidebar-item[data-id="${id}"]`);
+        if (target) target.classList.add('active');
+    });
+}
+
+function switchPage(id) {
+    return gsap.timeline().call(() => {
+        document.querySelectorAll('.sub-page').forEach(el => el.classList.remove('active'));
+        const target = document.getElementById('page-' + id);
+        if (target) target.classList.add('active');
+    });
+}
+
+function updateStep(text) {
+    return gsap.timeline().call(() => { stepLabel.textContent = text; });
+}
+
+const sections = {
+    login: 0, teacher: 0.08, student: 0.62, workflow: 0.92
+};
+
+function buildTimeline() {
+tl.clear();
+
+// ============ STAGE 0: LOGIN ============
+tl.add(updateStep('登录系统 — 输入账号密码'));
+tl.add(moveCursor(200, 220, '输入手机号作为账号', 'left', 0.6));
+tl.add(clickCursor());
+tl.call(() => {
+    const inp = document.getElementById('login-account');
+    // Type animation
+    const chars = '15612340001';
+    let i = 0;
+    const typeInterval = setInterval(() => {
+        if (i < chars.length) { inp.value += chars[i]; i++; }
+        else clearInterval(typeInterval);
+    }, 80);
+    return null;
+});
+tl.to({},{duration:1.2});
+
+tl.add(moveCursor(200, 292, '输入登录密码', 'left', 0.5));
+tl.add(clickCursor());
+tl.call(() => {
+    document.getElementById('login-password').value = '············';
+});
+tl.to({},{duration:0.6});
+
+tl.add(moveCursor(208, 358, '勾选用户协议', 'left', 0.5));
+tl.add(clickCursor());
+tl.call(() => { document.getElementById('login-agreement').checked = true; });
+tl.to({},{duration:0.4});
+
+tl.add(moveCursor(200, 410, '点击登录，系统自动安全验证', 'left', 0.5));
+tl.add(clickCursor());
+tl.to('#login-btn', {scale:0.95, duration:0.1});
+tl.to('#login-btn', {scale:1, duration:0.1});
+hideTip();
+tl.add(showSpinner(1.5));
+tl.call(() => { urlDisp.textContent = 'pre-changpo.huayungpt.com/newHome'; });
+tl.add(hideCursor());
+
+// Transition to dashboard
+tl.to(loginScreen, {opacity:0, duration:0.4});
+tl.call(() => { loginScreen.style.display = 'none'; appContainer.style.display = 'block'; });
+tl.fromTo(appContainer, {opacity:0}, {opacity:1, duration:0.5});
+tl.add(updateStep('教师绩效考核系统 — 考核任务管理主页'));
+tl.to({},{duration:1});
+
+// ============ STAGE 1: Teacher System Walkthrough ============
+
+// 1. Task Management (already showing)
+tl.add(moveCursor(130, 300, '侧边栏共9个菜单：7个考核流程 + 2个管理模块', 'left', 0.8));
+tl.to({},{duration:2.5});
+hideTip();
+tl.to({},{duration:0.5});
+
+// Click 自主申报评分
+tl.add(moveCursor(130, 348, '点击「自主申报评分」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('declarationReview'));
+tl.add(switchPage('declarationReview'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('自主申报评分 — 对教师申报项目打分'));
+tl.to({},{duration:2});
+hideTip();
+
+// Click 自主申报
+tl.add(moveCursor(130, 396, '点击「自主申报」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('selfDeclaration'));
+tl.add(switchPage('selfDeclaration'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('自主申报 — 教师提交考核材料'));
+tl.to({},{duration:2});
+hideTip();
+
+// Click 组内互评
+tl.add(moveCursor(130, 444, '点击「组内互评」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('groupPeerReview'));
+tl.add(switchPage('groupPeerReview'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('组内互评 — 同组教师互相评分'));
+tl.to({},{duration:2});
+hideTip();
+
+// Click 审核任务管理
+tl.add(moveCursor(130, 492, '点击「审核任务管理」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('auditTaskManage'));
+tl.add(switchPage('auditTaskManage'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('审核任务管理 — 管理员审核评分'));
+tl.to({},{duration:2});
+hideTip();
+
+// Click 考核评分记录
+tl.add(moveCursor(130, 540, '点击「考核评分记录」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('evaluateRecord'));
+tl.add(switchPage('evaluateRecord'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('考核评分记录 — 查看所有评分明细'));
+tl.to({},{duration:2});
+hideTip();
+
+// Click 考核结果统计
+tl.add(moveCursor(130, 588, '点击「考核结果统计」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('resultStats'));
+tl.add(switchPage('resultStats'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('考核结果统计 — 4种排名模式'));
+tl.to({},{duration:3});
+hideTip();
+
+// Click 考核方案管理
+tl.add(moveCursor(130, 660, '「考核方案管理」— 8种方案类型', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('programManage'));
+tl.add(switchPage('programManage'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('考核方案管理 — 考核模板蓝图'));
+tl.to({},{duration:3});
+hideTip();
+
+// Click 系统设置
+tl.add(moveCursor(130, 720, '「系统设置」— 学校基本信息配置', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('systemSettings'));
+tl.add(switchPage('systemSettings'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('系统设置 — 学年学期、用户权限'));
+tl.to({},{duration:2.5});
+hideTip();
+
+// Back to task management
+tl.add(moveCursor(130, 300, '回到「考核任务管理」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('taskManage'));
+tl.add(switchPage('taskManage'));
+tl.add(showSpinner(0.6));
+tl.add(updateStep('回到主页 — 每条记录都有4个操作按钮'));
+tl.to({},{duration:1});
+hideTip();
+
+// Hover over action buttons
+tl.add(moveCursor(1050, 444, '评价详情：查看任务内所有评分', 'right', 0.8));
+tl.to({},{duration:2});
+hideTip();
+tl.add(moveCursor(1120, 444, '同步组织/任教：关联教师信息', 'right', 0.6));
+tl.to({},{duration:2});
+hideTip();
+tl.add(moveCursor(1180, 444, '编辑：修改任务参数', 'right', 0.6));
+tl.to({},{duration:1.5});
+hideTip();
+tl.add(moveCursor(1240, 444, '删除：移除过期任务', 'right', 0.6));
+tl.to({},{duration:2});
+hideTip();
+tl.add(hideCursor());
+
+// ============ STAGE 2: Student System Transition ============
+tl.add(updateStep('切换到学生五育评价系统...'));
+tl.call(() => {
+    urlDisp.textContent = '/student-evaluate/evaluateTaskManage/taskManage?rBK=1';
+    // Switch sidebar to student mode
+    const sgLabel = document.getElementById('sidebar-label');
+    sgLabel.textContent = '评价任务管理';
+    const items = sidebar.querySelectorAll('.sidebar-item');
+    const studentMenus = [
+        {id:'stu-taskManage', text:'评价任务管理'},
+        {id:'stu-declarationReview', text:'申报审核'},
+        {id:'stu-evaluateRecord', text:'评价记录'},
+        {id:'stu-result', text:'评价结果'},
+        {id:'stu-program', text:'评价方案管理'},
+        {id:'stu-settings', text:'系统管理'}
+    ];
+    items.forEach((el,i) => {
+        if (i < studentMenus.length) {
+            el.setAttribute('data-id', studentMenus[i].id);
+            el.childNodes[1] ? null : null;
+            el.lastChild.textContent = studentMenus[i].text;
+            el.classList.remove('active');
+        } else {
+            el.style.display = 'none';
+        }
+    });
+    items[0].classList.add('active');
+});
+tl.to({},{duration:1});
+
+// Show student task management
+tl.call(() => {
+    document.querySelectorAll('.sub-page').forEach(el => el.classList.remove('active'));
+    const stuPage = document.getElementById('page-taskManage');
+    if (stuPage) {
+        stuPage.classList.add('active');
+        stuPage.querySelector('.page-header h3').textContent = '学生五育评价系统';
+        stuPage.querySelector('.page-header p').innerHTML = '德智体美劳全方位学生综合素质评价 <span style="color:#4A90D9">· 五育：德·智·体·美·劳</span>';
+    }
+});
+tl.add(showSpinner(0.6));
+tl.add(updateStep('学生五育评价系统 — 评价任务管理'));
+tl.to({},{duration:1.5});
+
+// Walk through student menus
+const studentClicks = [
+    {x:130, y:348, id:'stu-declarationReview', label:'申报审核 — 审核学生申报材料'},
+    {x:130, y:396, id:'stu-evaluateRecord', label:'评价记录 — 查看评价历史'},
+    {x:130, y:444, id:'stu-result', label:'评价结果 — 五育雷达图可视化'},
+    {x:130, y:540, id:'stu-program', label:'评价方案管理 — 方案模板配置'},
+    {x:130, y:588, id:'stu-settings', label:'系统管理 — 学期与权限设置'},
+];
+
+for (let click of studentClicks) {
+    tl.add(moveCursor(click.x, click.y, click.label, 'left', 0.6));
+    tl.add(clickCursor());
+    tl.add(switchSidebar(click.id));
+    tl.add(showSpinner(0.5));
+    tl.add(updateStep(click.label));
+    tl.to({},{duration:2});
+    hideTip();
+}
+
+// Back to first item
+tl.add(moveCursor(130, 300, '回到「评价任务管理」', 'left', 0.6));
+tl.add(clickCursor());
+tl.add(switchSidebar('stu-taskManage'));
+tl.add(showSpinner(0.5));
+tl.add(updateStep('学生五育评价 — 全部6个菜单已遍历完毕'));
+tl.to({},{duration:1.5});
+hideTip();
+tl.add(hideCursor());
+
+// ============ STAGE 3: Workflow Summary ============
+tl.call(() => {
+    appContainer.style.opacity = '0';
+    document.getElementById('workflow-stage').style.display = 'block';
+});
+tl.fromTo('#workflow-stage', {opacity:0, y:20}, {opacity:1, y:0, duration:0.5});
+tl.add(updateStep('常用工作流程速查 — 三个核心场景'));
+tl.from('#wf1', {opacity:0, y:20, duration:0.4});
+tl.from('#wf1 .wf-step', {opacity:0, x:-10, stagger:0.1, duration:0.3});
+tl.from('#wf2', {opacity:0, y:20, duration:0.4});
+tl.from('#wf2 .wf-step', {opacity:0, x:-10, stagger:0.1, duration:0.3});
+tl.to({},{duration:1});
+tl.from('#wf3', {opacity:0, y:20, duration:0.4});
+tl.from('#wf3 .wf-step', {opacity:0, x:-10, stagger:0.1, duration:0.3});
+tl.add(updateStep('演示完成 — 共展示教师9个菜单 + 学生6个菜单 + 4种排名模式'));
+}
+
+buildTimeline();
+
+// Progress tracking
+tl.eventCallback('onUpdate', function() {
+    const p = tl.progress();
+    progressBar.style.width = (p*100) + '%';
+});
+
+tl.eventCallback('onComplete', function() {
+    stepLabel.textContent = '演示完成！共覆盖教师绩效考核9个菜单 + 学生五育评价6个菜单 + 3条工作流';
+    document.getElementById('play-btn').textContent = '&#9654; 重新播放';
+    playing = false;
+});
+
+// Control buttons
+document.getElementById('play-btn').addEventListener('click', function() {
+    if (playing) {
+        tl.pause();
+        this.innerHTML = '&#9654; 继续演示';
+    } else {
+        if (tl.progress() >= 1) {
+            resetAll();
             buildTimeline();
-        });
+            tl.play();
+        } else {
+            tl.play();
+        }
+        this.innerHTML = '&#9646;&#9646; 暂停';
+    }
+    playing = !playing;
+});
 
-        // Initial entrance
-        gsap.from('.demo-header', {
-            opacity: 0,
-            y: -30,
-            duration: 0.8,
-            ease: 'power3.out'
-        });
+document.getElementById('reset-btn').addEventListener('click', function() {
+    resetAll();
+    buildTimeline();
+    tl.pause();
+    tl.progress(0);
+    playing = false;
+    document.getElementById('play-btn').innerHTML = '&#9654; 播放演示';
+    progressBar.style.width = '0%';
+    stepLabel.textContent = '点击播放开始 — 演示教师绩效考核系统全部9个菜单';
+});
 
-        gsap.from('.stage', {
-            opacity: 0,
-            y: 50,
-            stagger: 0.2,
-            duration: 0.6,
-            delay: 0.3
-        });
-    </script>
+function resetAll() {
+    // Reset login
+    document.getElementById('login-account').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('login-agreement').checked = false;
+    loginScreen.style.display = 'flex';
+    loginScreen.style.opacity = '1';
+    appContainer.style.display = 'none';
+    appContainer.style.opacity = '1';
+    document.getElementById('workflow-stage').style.display = 'none';
+    document.getElementById('workflow-stage').style.opacity = '1';
+
+    // Reset sidebar
+    document.getElementById('sidebar-label').textContent = '考核任务管理';
+    const teacherMenus = [
+        {id:'taskManage', text:'考核任务管理'},
+        {id:'declarationReview', text:'自主申报评分'},
+        {id:'selfDeclaration', text:'自主申报'},
+        {id:'groupPeerReview', text:'组内互评'},
+        {id:'auditTaskManage', text:'审核任务管理'},
+        {id:'evaluateRecord', text:'考核评分记录'},
+        {id:'resultStats', text:'考核结果统计'},
+        {id:'programManage', text:'考核方案管理'},
+        {id:'systemSettings', text:'系统设置'}
+    ];
+    const items = sidebar.querySelectorAll('.sidebar-item');
+    items.forEach((el,i) => {
+        el.style.display = '';
+        if (i < teacherMenus.length) {
+            el.setAttribute('data-id', teacherMenus[i].id);
+            el.lastChild.textContent = teacherMenus[i].text;
+            el.classList.remove('active');
+        }
+    });
+    items[0].classList.add('active');
+
+    // Reset pages
+    document.querySelectorAll('.sub-page').forEach(el => el.classList.remove('active'));
+    const taskPage = document.getElementById('page-taskManage');
+    if (taskPage) {
+        taskPage.classList.add('active');
+        taskPage.querySelector('.page-header h3').textContent = '长坡中学 · 教师绩效考核系统';
+        taskPage.querySelector('.page-header p').innerHTML = '管理教师考核任务、评分记录与结果统计 · 当前 16 条记录';
+    }
+
+    // Reset cursor & tip
+    gsap.set(cursor, {opacity:0});
+    gsap.set(tip, {opacity:0});
+    gsap.set(spinner, {opacity:0});
+    gsap.set('#wf1', {opacity:0, y:20});
+    gsap.set('#wf2', {opacity:0, y:20});
+    gsap.set('#wf3', {opacity:0, y:20});
+    gsap.set('#wf1 .wf-step', {opacity:0, x:-10});
+    gsap.set('#wf2 .wf-step', {opacity:0, x:-10});
+    gsap.set('#wf3 .wf-step', {opacity:0, x:-10});
+    urlDisp.textContent = 'pre-changpo.huayungpt.com/login';
+}
+
+// Initial entrance
+gsap.from('.demo-header', {opacity:0, y:-20, duration:0.7, ease:'power3.out'});
+gsap.from('.browser-frame', {opacity:0, y:30, duration:0.6, delay:0.2});
+gsap.from('.controls', {opacity:0, y:30, duration:0.6, delay:0.3});
+</script>
 </body>
 </html>

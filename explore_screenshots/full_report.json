@@ -1,0 +1,214 @@
+{
+  "teacher": {
+    "考核任务管理": {
+      "name": "考核任务管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "自主申报评分": {
+      "name": "自主申报评分",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "自主申报": {
+      "name": "自主申报",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/selfDeclaration",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "table_rows": 2,
+      "headers": [
+        "项目名称",
+        "加分名称",
+        "考核任务名称",
+        "申报日期",
+        "处理状态",
+        "备注",
+        "得分",
+        "操作",
+        "项目名称",
+        "加分名称",
+        "考核任务名称",
+        "申报日期"
+      ],
+      "buttons": [
+        "搜 索",
+        "新增"
+      ],
+      "text_preview": "项目名称\t加分名称\t考核任务名称\t申报日期\t处理状态\t备注\t得分\t操作\n\n项目名称\n\t\n加分名称\n\t\n考核任务名称\n\t\n申报日期\n\t\n处理状态\n\t\n备注\n\t\n得分\n\t\n操作\n\n\n暂无数据"
+    },
+    "组内互评": {
+      "name": "组内互评",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "审核任务管理": {
+      "name": "审核任务管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "考核评分记录": {
+      "name": "考核评分记录",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "考核结果统计": {
+      "name": "考核结果统计",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "考核方案管理": {
+      "name": "考核方案管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "系统设置": {
+      "name": "系统设置",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "status": "ok",
+      "active_menu": "长坡中学 · 教师绩效考核系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "删除"
+      ]
+    }
+  },
+  "student": {
+    "评价任务管理": {
+      "name": "评价任务管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "status": "ok",
+      "active_menu": "学生五育评价系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "申报审核": {
+      "name": "申报审核",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=2",
+      "status": "ok",
+      "active_menu": "学生五育评价系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "评价记录": {
+      "name": "评价记录",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=3",
+      "status": "ok",
+      "active_menu": "学生五育评价系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "评价结果": {
+      "name": "评价结果",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=4",
+      "status": "ok",
+      "active_menu": "学生五育评价系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "评价方案管理": {
+      "name": "评价方案管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=5",
+      "status": "ok",
+      "active_menu": "学生五育评价系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步任教",
+        "编辑",
+        "删除"
+      ]
+    },
+    "系统管理": {
+      "name": "系统管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=6",
+      "status": "ok",
+      "active_menu": "学生五育评价系统",
+      "buttons": [
+        "搜 索",
+        "新增",
+        "同步任教",
+        "编辑",
+        "删除"
+      ]
+    }
+  }
+}

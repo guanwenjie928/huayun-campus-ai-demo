@@ -1,0 +1,216 @@
+{
+  "teacher_menus": [
+    "长坡中学 · 教师绩效考核系统",
+    "长坡中学 · 教师绩效考核系统2025-2026学年长校",
+    "考核任务管理",
+    "自主申报评分",
+    "自主申报",
+    "组内互评",
+    "审核任务管理",
+    "考核评分记录",
+    "考核结果统计",
+    "考核方案管理",
+    "系统设置",
+    "共16条数据"
+  ],
+  "student_menus": [
+    "学生五育评价系统",
+    "评价任务管理",
+    "任务状态搜 索",
+    "任务状态搜 索新增",
+    "已结束全校年度学生评分2025-2026同步任教编辑删除",
+    "已结束",
+    "已结束全校年度学生评分2025-2026",
+    "申报审核",
+    "评价记录",
+    "评价详情",
+    "评价结果",
+    "已结束测试同步任教编辑删除",
+    "已结束测试",
+    "评价方案管理",
+    "系统管理",
+    "已结束5.27评价任务同步任教编辑删除",
+    "已结束5.27评价任务",
+    "已结束任务二同步任教编辑删除",
+    "已结束任务二",
+    "已结束测试同步方案任务同步任教编辑删除",
+    "已结束测试同步方案任务",
+    "已结束测试查看结果A1同步任教编辑删除",
+    "已结束测试查看结果A1",
+    "已结束是否查看结果测试同步任教编辑删除",
+    "已结束是否查看结果测试",
+    "已结束测试名称显示同步任教编辑删除",
+    "已结束测试名称显示",
+    "已结束向英老师评价任务二维费同步任教编辑删除",
+    "已结束向英老师评价任务二维费",
+    "已结束未开始任务名称测试11同步任教编辑删除",
+    "已结束未开始任务名称测试11",
+    "进行中测试语文组评价任务同步任教编辑删除",
+    "进行中",
+    "进行中测试语文组评价任务",
+    "进行中学生互评同步任教编辑删除",
+    "进行中学生互评",
+    "已结束本校培养目标达成度评价任务同步任教编辑删除",
+    "已结束本校培养目标达成度评价任务",
+    "已结束创新之魂-1自主申报评价任务同步任教编辑删除",
+    "已结束创新之魂-1自主申报评价任务",
+    "已结束看就看看监控同步任教编辑删除",
+    "已结束看就看看监控",
+    "已结束创新之魂评价任务同步任教编辑删除",
+    "已结束创新之魂评价任务"
+  ],
+  "pages": [
+    {
+      "name": "teacher_main",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "搜 索",
+        "删除"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "teacher_03_考核任务管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "新增",
+        "同步组织/任教",
+        "编辑",
+        "搜 索",
+        "删除"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "teacher_03_考核任务管理_btn_新增",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage/editTask",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "teacher_09_考核结果统计",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage/editTask",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "teacher_10_考核方案管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage/editTask",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "teacher_11_系统设置",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage/editTask",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "student_main",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "新增",
+        "同步任教",
+        "编辑",
+        "搜 索",
+        "删除"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "student_02_评价任务管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "新增",
+        "同步任教",
+        "编辑",
+        "搜 索",
+        "删除"
+      ],
+      "text_preview": "评价任务管理"
+    },
+    {
+      "name": "student_02_评价任务管理_btn_新增",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "student_11_评价结果",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "student_14_评价方案管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    },
+    {
+      "name": "student_15_系统管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "rows": 0,
+      "tabs": [],
+      "buttons": [
+        "返回",
+        "取 消",
+        "确 定"
+      ],
+      "text_preview": ""
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "teacher": [
+    {
+      "text": "考核任务管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "y": 75,
+      "changed": false
+    },
+    {
+      "text": "自主申报评分",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/declarationReview",
+      "y": 175,
+      "changed": true
+    },
+    {
+      "text": "自主申报",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/selfDeclaration",
+      "y": 223,
+      "changed": true
+    },
+    {
+      "text": "组内互评",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/groupPeerReview",
+      "y": 271,
+      "changed": true
+    },
+    {
+      "text": "审核任务管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/auditTaskManage",
+      "y": 319,
+      "changed": true
+    },
+    {
+      "text": "考核评分记录",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/evaluateRecord",
+      "y": 366,
+      "changed": true
+    },
+    {
+      "text": "考核结果统计",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "y": 414,
+      "changed": false
+    },
+    {
+      "text": "考核方案管理",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "y": 467,
+      "changed": false
+    },
+    {
+      "text": "系统设置",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "y": 519,
+      "changed": false
+    },
+    {
+      "text": "共16条数据",
+      "url": "https://pre-changpo.huayungpt.com/teacher-evaluate/evaluateTaskManage/taskManage",
+      "y": 1757,
+      "changed": false
+    }
+  ],
+  "student": [
+    {
+      "text": "评价任务管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "y": 82,
+      "changed": false
+    },
+    {
+      "text": "申报审核",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/declarationReview?rBK=2",
+      "y": 187,
+      "changed": true
+    },
+    {
+      "text": "评价记录",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/evaluateRecord?rBK=3",
+      "y": 239,
+      "changed": true
+    },
+    {
+      "text": "评价结果",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "y": 292,
+      "changed": false
+    },
+    {
+      "text": "评价方案管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "y": 344,
+      "changed": false
+    },
+    {
+      "text": "系统管理",
+      "url": "https://pre-changpo.huayungpt.com/student-evaluate/evaluateTaskManage/taskManage?rBK=1",
+      "y": 397,
+      "changed": false
+    }
+  ]
+}
